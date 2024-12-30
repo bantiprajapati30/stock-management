@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connect } from "@/dbConfig/dbConfig";
 import Brand from "@/models/brandModel";
+import Category from "@/models/categoryModel";
 
 connect();
 export async function POST(request) {
@@ -24,6 +25,9 @@ export async function POST(request) {
 
         // Check if brand already exists with the same name and parentValue
         const existingBrand = await Brand.findOne({ name: { $regex: `^${name}$`, $options: "i" }, parentValue });
+        const existingCategory = await Category.findOne({ refValueId: parentValue });
+        console.log(existingCategory, "existingCategory");
+        // debugger
         if (existingBrand) {
             return NextResponse.json(
                 { error: "Brand already exists with the same category" },
@@ -39,7 +43,8 @@ export async function POST(request) {
         const newBrand = new Brand({
             name,
             parentValue,
-            refValueId: nextRefValueId
+            refValueId: nextRefValueId,
+            categoryName: existingCategory.name
         });
 
         // Save brand to database

@@ -6,8 +6,9 @@ export function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname;
     const publicPaths = path === "/login" || path === "/signup";
     const token = request.cookies.get("token")?.value || false;
+    console.log(publicPaths, token, "yrdy")
     if (publicPaths && token) {
-        return NextResponse.redirect(new URL("/dashboard", request.url));
+        return NextResponse.redirect(new URL("/", request.url));
     }
     if (!publicPaths && !token) {
         return NextResponse.redirect(new URL("/login", request.url));
@@ -16,5 +17,5 @@ export function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-    matcher: ["/dashboard", "/login", "/signup"],
+    matcher: ["/", "/login", "/signup"],
 }

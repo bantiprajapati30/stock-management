@@ -21,7 +21,7 @@ export default function Login() {
             setLoading(false);
             if (data.success) {
                 const userData = await axios.get("/api/users/get-data");
-                router.push("/dashboard", { state: userData.data.Data });
+                router.push("/", { state: userData.data.Data });
             }
         } catch (error) {
             console.log(error, "error");

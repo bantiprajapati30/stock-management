@@ -9,14 +9,8 @@ export async function GET(request) {
         // Fetch all categories from the database
         const { searchParams } = new URL(request.url);
         const parentValue = searchParams.get("parentValue");
-        if (!parentValue) {
-            return NextResponse.json(
-                { error: "parentValue query parameter is required" },
-                { status: 400 }
-            );
-        }
 
-        const brands = await Brand.find({ parentValue: Number(parentValue) });
+        const brands = await Brand.find(parentValue ? { parentValue: Number(parentValue) }:{});
 
         if (!brands.length) {
             return NextResponse.json(

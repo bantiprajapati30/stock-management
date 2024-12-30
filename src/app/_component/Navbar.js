@@ -21,8 +21,8 @@ const Navbar = () => {
             <div className="max-w-7xl mx-auto px-4">
                 <div className="flex justify-between h-16">
                     <div className="flex space-x-8">
-                        <Link href="/dashboard"
-                            className={`inline-flex items-center px-3 py-2 text-sm font-medium ${router.pathname === '/dashboard' ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'
+                        <Link href="/"
+                            className={`inline-flex items-center px-3 py-2 text-sm font-medium ${router.pathname === '/' ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'
                                 }`}>
                             Dashboard
                         </Link>

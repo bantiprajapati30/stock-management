@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import AddCategory from "./_component/AddCategory";
 import AddBrand from "./_component/AddBrand";
+import Sidebar from "./_component/Sidebar";
+import style from './category.module.scss'
 
 export default function Categories() {
     const [categories, setCategories] = useState([]);
@@ -25,7 +27,7 @@ export default function Categories() {
 
     return (
         <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
+            <div className={`max-w-7xl mx-auto }`}>
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold text-gray-900">Categories</h1>
                     <div>
@@ -43,6 +45,7 @@ export default function Categories() {
                     </button>
                     </div>
                 </div>
+                <Sidebar />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {categories.map((category) => (
