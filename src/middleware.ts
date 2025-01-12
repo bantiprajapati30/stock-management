@@ -6,7 +6,6 @@ export function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname;
     const publicPaths = path === "/login" || path === "/signup";
     const token = request.cookies.get("token")?.value || false;
-    console.log(publicPaths, token, "yrdy")
     if (publicPaths && token) {
         return NextResponse.redirect(new URL("/", request.url));
     }
