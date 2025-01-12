@@ -15,7 +15,7 @@ const brandSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    CategoryName: {
+    categoryName: {
         type: String,
         required: true
     },

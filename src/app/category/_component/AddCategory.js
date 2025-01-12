@@ -1,31 +1,35 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { createCategory } from "@/features/category/categoryAction";
 
-export default function AddCategory({ showModal, setShowModal, fetchCategories }) {
+export default function AddCategory({ showModal, setShowModal }) {
     const [categoryName, setCategoryName] = useState("");
     const [description, setDescription] = useState("");
     const [loading, setLoading] = useState(false);
-
-    const handleSubmit = async (e) => {
+const dispatch = useDispatch()
+    const handleSubmit = (e) => {
         e.preventDefault();
-        try {
-            setLoading(true);
-            const response = await axios.post("/api/category/add-category", {
-                name: categoryName,
-                description
-            });
-            setLoading(false);
-            if (response.data.success) {
-                setShowModal(prevState=> ({...prevState, category: false}));
-                setCategoryName("");
-                setDescription("");
-                fetchCategories();
-            }
-        } catch (error) {
-            setLoading(false);
-            console.log(error);
-        }
+        dispatch(createCategory({name: categoryName, description}))
+        console.log("i am here")
+        // try {
+        //     setLoading(true);
+        //     const response = await axios.post("/api/category/add-category", {
+        //         name: categoryName,
+        //         description
+        //     });
+        //     setLoading(false);
+        //     if (response.data.success) {
+        //         setShowModal(prevState=> ({...prevState, category: false}));
+        //         setCategoryName("");
+        //         setDescription("");
+        //         // fetchCategories();
+        //     }
+        // } catch (error) {
+        //     setLoading(false);
+        //     console.log(error);
+        // }
     };
 
     if (!showModal) return null;

@@ -4,6 +4,7 @@ import Brand from "@/models/brandModel";
 import Category from "@/models/categoryModel";
 
 connect();
+
 export async function POST(request) {
     try {
         const reqBody = await request.json();
@@ -24,13 +25,24 @@ export async function POST(request) {
         }
 
         // Check if brand already exists with the same name and parentValue
-        const existingBrand = await Brand.findOne({ name: { $regex: `^${name}$`, $options: "i" }, parentValue });
-        const existingCategory = await Category.findOne({ refValueId: parentValue });
-        console.log(existingCategory, "existingCategory");
-        // debugger
+        const existingBrand = await Brand.findOne({
+            name: { $regex: `^${name}$`, $options: "i" },
+            parentValue,
+        });
+
         if (existingBrand) {
             return NextResponse.json(
                 { error: "Brand already exists with the same category" },
+                { status: 400 }
+            );
+        }
+
+        // Validate the parentValue against the Category collection
+        const existingCategory = await Category.findOne({ refValueId: parentValue });
+        console.log(existingCategory, 'existingCategory');
+        if (!existingCategory) {
+            return NextResponse.json(
+                { error: "Invalid 'parentValue': No matching category found" },
                 { status: 400 }
             );
         }
@@ -40,20 +52,21 @@ export async function POST(request) {
         const nextRefValueId = highestBrand ? highestBrand.refValueId + 1 : 1;
 
         // Create a new Brand
+        console.log(existingCategory.name, 'existingCategory.name');
         const newBrand = new Brand({
             name,
             parentValue,
             refValueId: nextRefValueId,
-            categoryName: existingCategory.name
+            categoryName: existingCategory.name,
         });
-
+console.log(newBrand, 'newBrand');
         // Save brand to database
         const savedBrand = await newBrand.save();
 
         return NextResponse.json({
             message: "Brand created successfully",
             success: true,
-            brand: savedBrand
+            brand: savedBrand,
         });
 
     } catch (error) {
